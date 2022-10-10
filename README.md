@@ -7,7 +7,6 @@
     git clone https://github.com/aliuosio/mage2.pwa.git
 
 ### Installation
- Fresh Installation (latest magento 2 version) or your running project when located in your filesystem
     
     cd mage2.pwa
     chmod +x bin/*.sh
@@ -22,7 +21,7 @@ OSX: on first run very slow due to docker-sync update of local shop files volume
 See `.docker-sync/daemon.log` for progress
 
 #### Support
-If you encounter any problems or bugs, please create an issue on [GitHub](https://github.com/aliuosio/mage2.docker/issues).
+If you encounter any problems or bugs, please create an issue on [GitHub](https://github.com/aliuosio/mage2.pwa/issues).
 
 #### Contribute
 Please Contribute by creating a fork of this repository.  
