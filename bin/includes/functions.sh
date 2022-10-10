@@ -83,20 +83,20 @@ pwaPackages() {
   commands="npm config set prefix '$WORKDIR_SERVER_NODE/.npm-global'"
   runCommand "$nodeContainer '$commands'"
 
-  commands="npm install -g @magento/pwa-buildpack @magento/create-pwa"
+  # commands="npm install -g @magento/create-pwa"
+  # runCommand "$nodeContainer '$commands'"
+
+  commands="npm install -g webpack@^4.0.0"
   runCommand "$nodeContainer '$commands'"
 
-  #  commands="npm install webpack@^4.0.0"
-  #  runCommand "$nodeContainer '$commands'"
-  #
   #  commands="npm install graphql-ws"
   #  runCommand "$nodeContainer '$commands'"
-  #
-  #  commands="npm install @magento/pwa-buildpack"
-  #  runCommand "$nodeContainer '$commands'"
-  #
-  #  commands="  npm audit fix --force"
-  #  runCommand "$nodeContainer '$commands'"
+
+  commands="npm install -g @magento/pwa-buildpack"
+  runCommand "$nodeContainer '$commands'"
+
+  # commands="  npm audit fix --force"
+  # runCommand "$nodeContainer '$commands'"
 }
 
 pwaConfig() {
