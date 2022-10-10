@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+
+# shellcheck disable=SC2046
+project_root=$(dirname $(dirname $(realpath "$0" )))
+. "$project_root/bin/includes/pwa_functions.sh" "$project_root"
+
+getLogo
+createPWAFolderHost
+dockerRefresh
+#setNodeOptionSSL
+pwaRun
