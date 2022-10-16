@@ -28,6 +28,7 @@ setEnvironment() {
 setEnvironment "$1"
 
 nodeContainer="docker exec -it ${NAMESPACE}_node sh -lc"
+nodeContainerRoot="docker exec -it -u root ${NAMESPACE}_node sh -lc"
 
 getLogo() {
   echo "                             _____      _            _             "
@@ -51,56 +52,19 @@ dockerRefresh() {
   fi
 }
 
-createPWAFolderHost() {
+pwaClone() {
   if [ ! -d "$WORKDIR_NODE" ]; then
-    commands="mkdir -p $WORKDIR_NODE"
+    commands="git clone https://github.com/magento/pwa-studio.git $WORKDIR_NODE && cd $WORKDIR_NODE"
     runCommand "$commands"
   fi
 }
 
-
-setNodeOptionSSL() {
-  NODE_VERSION_NUMBER=$(cut -d . -f 1 <<<"$NODE_VERSION")
-
-  if [ "$NODE_VERSION_NUMBER" -gt 16 ]; then
-    commands="export NODE_OPTIONS=--openssl-legacy-provider"
-    runCommand "$nodeContainer '$commands'"
-  fi
-}
-
-pwaRun() {
-  if [ ! -f "$WORKDIR_NODE/package.json" ]; then
-    pwaPackages
-    pwaConfig
-    npmInstall
-    # npmCert
-  fi
-
-  npmRun "watch"
-}
-
-pwaPackages() {
+pwaConfig() {
   commands="npm config set prefix '$WORKDIR_SERVER_NODE/.npm-global'"
   runCommand "$nodeContainer '$commands'"
 
-  # commands="npm install -g @magento/create-pwa"
-  # runCommand "$nodeContainer '$commands'"
-
-  commands="npm install -g webpack@^4.0.0"
-  runCommand "$nodeContainer '$commands'"
-
-  #  commands="npm install graphql-ws"
-  #  runCommand "$nodeContainer '$commands'"
-
-  commands="npm install -g @magento/pwa-buildpack"
-  runCommand "$nodeContainer '$commands'"
-
-  # commands="  npm audit fix --force"
-  # runCommand "$nodeContainer '$commands'"
-}
-
-pwaConfig() {
-  commands="buildpack create-project /home/node \
+  commands="
+  buildpack create-project /home/node \
   --template \"@magento/venia-concept\" \
   --name \"pwa\" \
   --author \"mage2.docker\" \
@@ -118,11 +82,21 @@ npmInstall() {
 }
 
 npmCert() {
-  commands="npm run buildpack -- create-custom-origin ."
-  runCommand "$nodeContainer '$commands'"
+  commands="export 'NODE_OPTIONS=--openssl-legacy-provider' && npm run buildpack -- create-custom-origin ./"
+  runCommand "$nodeContainerRoot '$commands'"
 }
 
 npmRun() {
   commands="npm run $1"
   runCommand "$nodeContainer '$commands'"
+}
+
+pwaRun() {
+  # if [ ! -f "$WORKDIR_NODE/package.json" ]; then
+  npmInstall
+  pwaConfig
+  npmCert
+  # fi
+
+  npmRun "watch"
 }
