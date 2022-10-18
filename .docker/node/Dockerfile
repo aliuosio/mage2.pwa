@@ -9,6 +9,8 @@ ENV PATH=/home/node/node_modules/.bin:/home/node/.npm-global/bin:$PATH
 RUN apk update && apk upgrade \
     && apk add make g++ git openssh openssl bash dirmngr bash-completion nano tzdata python3 \
     && rm -rf /var/cache/apk/* \
-    && chmod +x /usr/local/bin/*
-
-RUN  chown -R $USER:$GROUP /home/$USER
+    && chmod +x /usr/local/bin/* \
+    && apk add sudo \
+    && echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel \
+    && adduser node wheel \
+    && chown -R $USER:$GROUP /home/$USER
