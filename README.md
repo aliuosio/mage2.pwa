@@ -1,5 +1,5 @@
 ## Magento 2 PWA Installer on OSX/Linux Docker stack 
-### One Stack for all Projects
+### Don not use in production yet
 **Docker containers:  nodejs, watchtower**
 
 ### Get Source
