@@ -3,10 +3,6 @@ version: '3.8'
 services:
 
   node:
-#    build:
-#      context: ./.docker/node
-#      args:
-#        NODE_VERSION: ${NODE_VERSION}
     container_name: ${NAMESPACE}_node
     image: osioaliu/node:${NODE_VERSION}
     entrypoint: [ "docker-entrypoint.sh", "tail", "-f", "/dev/null" ]
@@ -19,15 +15,19 @@ services:
       - "3000:3000"
     volumes:
       - node_data:${WORKDIR_SERVER_NODE}:delegated
+#    build:
+#      context: ./.docker/node
+#      args:
+#        NODE_VERSION: ${NODE_VERSION}
 
-  watchtower:
-    container_name: ${NAMESPACE}_watchtower
-    image: containrrr/watchtower
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      TZ: ${TZ}
-    command: --interval 3600
+#  watchtower:
+#    container_name: ${NAMESPACE}_watchtower
+#    image: containrrr/watchtower
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#    environment:
+#      TZ: ${TZ}
+#    command: --interval 3600
 
 volumes:
   node_data:
