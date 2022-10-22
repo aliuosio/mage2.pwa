@@ -12,5 +12,7 @@ RUN apk update && apk upgrade \
     && rm -rf /var/cache/apk/* \
     && chmod +x /usr/local/bin/* \
     && chown -R $USER:$GROUP /home/$USER
+# %wheel ALL=(ALL:ALL) NOPASSWD: ALL
 
-RUN echo 'node ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN echo '%wheel ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/wheel \
+    && usermod -a -G wheel $USER
